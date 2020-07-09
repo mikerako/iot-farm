@@ -1,26 +1,27 @@
 # Custom Data-Driven IOT Farming Experience
 
-AJ Kingsley, Kevin Kraydich, Michael Rakowiecki
+Small farming project that relies on feedback from sensors to control parameters for optimal plant growth.
 
-Small farming project that relies on feedback from sensors to control parameters for optimal plant growth
+## Authors
+AJ Kingsley, Kevin Kraydich, Michael Rakowiecki
 
 ## Overview
 
-More to come in future
+TODO
 
-## Sensors
+## Hardware
 
-The sensors used for this project are:
+The hardware used for this project includes:
 
-1. CO2 sensor			x1
-2. Thermometer			x3
-3. Humidity sensor		x1
-4. Camera				x4
+1x  Raspberry Pi 4
+2x  CO<sub>2</sub>, Humidity, and Temperature Sensor       
+1x  IR Camera
+1x  4-Channel Relay Module
 
 ## Purpose
 
-More to come in future
+TODO
 
 ## Usage
 
-More to come in future
+TODO
