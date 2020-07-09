@@ -14,7 +14,7 @@ TODO
 The hardware used for this project includes:
 
 1x  Raspberry Pi 4
-2x  CO<sub>2</sub>, Humidity, and Temperature Sensor       
+2x  CO<sub>2</sub>, Humidity, and Temperature Sensor
 1x  IR Camera
 1x  4-Channel Relay Module
 
