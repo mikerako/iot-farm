@@ -11,6 +11,6 @@ setup(
     author='Kevin Kraydich',
     author_email='kevin.kraydich@gmail.com',
     packages=['iot-farm'],
-    install_requires=[],
+    install_requires=['twilio'],
     scripts=[]
 )
