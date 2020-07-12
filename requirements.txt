@@ -1,1 +1,2 @@
 twilio >= 6.44.0
+python-dotenv >= 0.14.0

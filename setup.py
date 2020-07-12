@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open('README', 'r') as f:
+with open('README.md', 'r') as f:
     long_description = f.read()
 
 setup(
@@ -10,7 +10,6 @@ setup(
     license='MIT',
     author='Kevin Kraydich',
     author_email='kevin.kraydich@gmail.com',
-    packages=['iot-farm'],
-    install_requires=['twilio'],
+    install_requires=['twilio', 'python-dotenv'],
     scripts=[]
 )
