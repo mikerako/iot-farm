@@ -11,5 +11,6 @@ setup(
     author='Kevin Kraydich',
     author_email='kevin.kraydich@gmail.com',
     install_requires=['twilio', 'python-dotenv'],
-    scripts=[]
+    scripts=[],
+    python_requires='>=3.6',
 )
