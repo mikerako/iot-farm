@@ -17,9 +17,27 @@ class User:
 
 class EmailAlert:
     def __init__(self, sender):
-        self._sender = sender
+        with open(CONFIG_FILENAME) as f:
+            config = json.load(f)
+
+        api_key = config['sendgrid']['api_key']
+
+        self._client = SendGridAPIClient(api_key)
+        self._email = config['email']
+        self._users = []
 
     def send(self, message):
+        try:
+            email = Mail(
+                from_email = 'lettuce.alerts@gmail.com',
+                to_emails = [user.email for user in self._users],
+                subject = 'Sensor Data Report',
+                html_content = message
+            )
+            response = self._client.send(email)
+            logging.debug(response)
+        except Exception as e:
+            logging.error(e)
         
 
     def generate_email(self, name, report):
