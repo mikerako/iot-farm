@@ -3,9 +3,9 @@ import json
 import os
 import re
 import logging
-from twilio.rest import Client
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from twilio.rest import Client
 
 logging.basicConfig(filename='error.log',level=logging.DEBUG)
 CONFIG_FILENAME = 'CONFIG.json'
@@ -29,9 +29,7 @@ class UserList:
     
     def add_users(self, users):
         for user_params in users:
-            print(user_params)
             if self.validate(user_params):
-                print('valid: ', user_params)
                 new_user = User(user_params)
                 self.users.append(new_user)
 
@@ -45,30 +43,27 @@ class UserList:
 class EmailAlert:
     def __init__(self, users):
         api_key = CONFIG['sendgrid']['api_key']
-
-        self._client = SendGridAPIClient(api_key)
+        self._client = SendGridAPIClient(api_key=api_key)
         self._email = CONFIG['email']
         self._users = users.get_users()
 
     def send(self, message):
-        try:
-            print('hi', self._users)
-            recipients = [user.email for user in self._users]
-            print('recipients: ', recipients)
-            messages = [generate_message(message, user, False) for user in self._users]
-            print('messages: ', messages)
+        for user in self._users:
             email = Mail(
-                from_email = self._email['username'],
-                to_emails = recipients,
-                subject = 'Sensor Data Report',
-                html_content = messages
+                    from_email = self._email,
+                    to_emails = user.email,
+                    subject = 'Sensor Data Report',
+                    html_content = generate_message(user.name, message, False)
             )
-            response = self._client.send(email)
-            for msg in [response.status_code, response.body, response.headers]:
-                logging.debug(msg)
-            print(response.status_code)
-        except Exception as e:
-            logging.error(e)
+            try: 
+                response = self._client.send(email)
+                for msg in [response.status_code, response.body, response.headers]:
+                    print(msg)
+                    logging.debug(msg)
+            except Exception as e:
+                print('email didnt work')
+                print(e)
+                logging.error(e)
 
 class TextAlert:
     def __init__(self, users):
