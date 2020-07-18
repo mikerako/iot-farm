@@ -142,3 +142,6 @@ cython_debug/
 
 # Config file
 config.json
+
+# Phone numbers
+numbers.json
