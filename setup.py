@@ -10,6 +10,6 @@ setup(
     license='MIT',
     author='Kevin Kraydich',
     author_email='kevin.kraydich@gmail.com',
-    install_requires=['twilio', 'python-dotenv'],
+    install_requires=['twilio', 'python-dotenv', 'sendgrid'],
     scripts=[]
 )

@@ -1,7 +1,10 @@
 '''Module for handling text and email alerts.'''
 import json
+import os
 import logging
 from twilio.rest import Client
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 logging.basicConfig(filename='error.log',level=logging.DEBUG)
 CONFIG_FILENAME = 'config.json'
@@ -13,7 +16,19 @@ class User:
         self.email = params['email']
 
 class EmailAlert:
-    pass
+    def __init__(self, sender):
+        self._sender = sender
+
+    def send(self, message):
+        
+
+    def generate_email(self, name, report):
+        return (
+            '<p><strong>Hi {}! Here is the daily report:</strong></p>'
+            '<p>{}</p>'
+            '<p><strong>This is an automated message; please do not reply.</strong></p>'
+        ).format(name, report)
+
 
 class TextAlert:
     def __init__(self):
