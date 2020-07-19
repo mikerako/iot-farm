@@ -5,7 +5,9 @@ import re
 import logging
 import smtplib
 from twilio.rest import Client
-from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 
 # Logging and config files
 logging.basicConfig(filename='output.log',level=logging.DEBUG)
@@ -13,12 +15,14 @@ CONFIG_FILENAME = 'CONFIG.json'
 with open(CONFIG_FILENAME) as f:
     CONFIG = json.load(f)
 
+
 '''Class for storing name, number, and email address.'''
 class User:
     def __init__(self, params):
         self.name = params['name']
         self.number = params['number']
         self.email = params['email']
+
 
 '''Class for storing and accessing valid user data.'''
 class UserList:
@@ -43,9 +47,10 @@ class UserList:
         res = validate_number(user_info['number']) and validate_email(user_info['email'])
         return res
 
+
 '''Class for sending and creating email messages.'''
 class EmailAlert:
-    def __init__(self: EmailAlert, users: UserList) -> None:
+    def __init__(self, users: UserList) -> None:
         email_info = CONFIG['email']
         self._username = email_info['username']
         self._password = email_info['password']
@@ -53,33 +58,34 @@ class EmailAlert:
         self._port = int(email_info['port'])
         self._users = users.get_users()
 
-    def send(self: EmailAlert, message) -> None:
+    def send(self, message) -> None:
         # Create secure session with Gmail's SMTP server
         server = smtplib.SMTP(self._smtp, self._port)
         server.starttls()
         server.login(self._username, self._password)
 
-        # Send email to every user
-        for user in self._users:
-            email = generate_email(self._username, user, message)
-            try: 
-                response = server.send_message(email)
-                if response:
-                    logging.debug(response)
-            except Exception as e:
-                logging.error(e)
-        
-        server.quit()
+        email = generate_email(message)
+        recipients = [user.email for user in self._users]
+
+        try: 
+            response = server.sendmail(self._username, recipients, email.as_string())
+            if response:
+                logging.debug('Could not send email to: {}'.format(response))
+        except Exception as e:
+            logging.error(e)
+        finally:
+            server.quit()
+
 
 '''Class for sending and creating text messages.'''
 class TextAlert:
-    def __init__(self: TextAlert, users: UserList) -> None:
+    def __init__(self, users: UserList) -> None:
         self._account_SID = CONFIG['twilio']['account_SID']
         self._auth_token = CONFIG['twilio']['auth_token']
         self._number = CONFIG['twilio']['sending_number']
-        self._users = users.get_list()
+        self._users = users.get_users()
 
-    def send(self: TextAlert, message: str) -> None:
+    def send(self, message: str) -> None:
         client = Client(self._account_SID, self._auth_token)
 
         for user in self._users:
@@ -90,10 +96,11 @@ class TextAlert:
                     from_ = self._number,
                     to = user.number
                 )
-                if response['error_code']:
+                if response['error_code'] != 'null':
                     logging.debug(response)
             except Exception as e:
                 logging.error(e)
+
 
 def generate_text(name: str, content: str) -> str:
     return (
@@ -102,23 +109,31 @@ def generate_text(name: str, content: str) -> str:
         'This is an automated message; please do not reply.'
     ).format(name, content)
 
-def generate_email(from_email: str, to_user: User, content: str) -> EmailMessage:
-    body = (
-        '<p><strong>Hi {}! Here is the daily report:</strong></p>'
+def generate_email(content: str) -> MIMEMultipart:
+    # Create message container and header
+    email = MIMEMultipart('alternative')
+    email['Subject'] = 'Sensor Data Report'
+
+    # Create HTML email contents
+    html = (
+        '<html>'
+        '<head></head>'
+        '<body>'
+        '<p><strong>Here is the daily report:</strong></p>'
         '<div id="report">{}</div>'
         '<p><strong>This is an automated message; please do not reply.</strong></p>'
-    ).format(to_user.name, content)
+        '</body>'
+        '</html>'
+    ).format(content)
 
-    email = EmailMessage()
-    email['Subject'] = 'Sensor Data Report'
-    email['From'] = from_email
-    email.set_content(body)
-    email['To'] = to_user.email
+    text = MIMEText(html, 'html')
+    email.attach(text)
 
     return email
 
 def validate_number(phone_number: str) -> bool:
-    return re.match(r'^\+[1-9]\d{1,14}$', phone_number) is not None
+    regexp = r'^\+[1-9]\d{1,14}$'
+    return re.match(regexp, phone_number) is not None
 
 def validate_email(email: str) -> bool:    
     regexp = r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)'
@@ -133,8 +148,8 @@ def main() -> None:
     email.send('test')
 
     # Send a test text
-    text = TextAlert(users)
-    text.send('test')
+    # text = TextAlert(users)
+    # text.send('test')
 
 if __name__ == "__main__":
     main()

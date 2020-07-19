@@ -36,12 +36,15 @@ In order for this feature to work properly, you will need to add a config file (
         },
         "email": {
             "username": "youremail@provider.com",
-            "password": "hunter2"
+            "password": "hunter2",
+            "smtp": "smtp.gmail.com",
+            "port": "587"
         },
         "users": [
             {
-                "name": "Kevin",
-                "number": "+15558675309"
+                "name": "John Smith",
+                "number": "+15558675309",
+                "email": "john.smith@provider.com"
             }
         ]
     }
