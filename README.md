@@ -24,4 +24,26 @@ TODO
 
 ## Usage
 
-TODO
+### Text Notifications
+
+In order for this feature to work properly, you will need to add a config file (`config.json`) to `src/alerts/text` which stores API credentials as well as users' names and phone numbers. Here is an example of what this file might look like:
+
+    {
+        "twilio" {
+            "account_SID": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "auth_token": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "sending_number": "+15558675309"
+        },
+        "email": {
+            "username": "youremail@provider.com",
+            "password": "hunter2"
+        },
+        "users": [
+            {
+                "name": "Kevin",
+                "number": "+15558675309"
+            }
+        ]
+    }
+
+Note: phone numbers must be in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, per Twilio's API.

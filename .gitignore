@@ -140,5 +140,8 @@ cython_debug/
 # VSCode folder
 .vscode/
 
+# Config file
+config.json
+
 # Phone numbers
 numbers.json
