@@ -30,7 +30,7 @@ class UserList:
         if self.validate(user_info):
             self.users.append(User(user_info))
         else:
-            logging.debug('Improper formatting of user with name {}'.format(user_info['name']))
+            logging.error('Improper formatting of user with name {}'.format(user_info['name']))
     
     def add_users(self, users):
         for user_params in users:
@@ -45,14 +45,17 @@ class UserList:
 
 '''Class for sending and creating email messages.'''
 class EmailAlert:
-    def __init__(self, users):
+    def __init__(self: EmailAlert, users: UserList) -> None:
+        email_info = CONFIG['email']
+        self._username = email_info['username']
+        self._password = email_info['password']
+        self._smtp = email_info['smtp']
+        self._port = int(email_info['port'])
         self._users = users.get_users()
-        self._username = CONFIG['email']['username']
-        self._password = CONFIG['email']['password']
 
-    def send(self, message):
+    def send(self: EmailAlert, message) -> None:
         # Create secure session with Gmail's SMTP server
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP(self._smtp, self._port)
         server.starttls()
         server.login(self._username, self._password)
 
@@ -70,34 +73,36 @@ class EmailAlert:
 
 '''Class for sending and creating text messages.'''
 class TextAlert:
-    def __init__(self, users):
+    def __init__(self: TextAlert, users: UserList) -> None:
         self._account_SID = CONFIG['twilio']['account_SID']
         self._auth_token = CONFIG['twilio']['auth_token']
         self._number = CONFIG['twilio']['sending_number']
         self._users = users.get_list()
 
-    def send(self, message):
+    def send(self: TextAlert, message: str) -> None:
         client = Client(self._account_SID, self._auth_token)
 
         for user in self._users:
             full_message = generate_text(user.name, message)
             try:
-                client.messages.create(
+                response = client.messages.create(
                     body = full_message,
                     from_ = self._number,
                     to = user.number
                 )
+                if response['error_code']:
+                    logging.debug(response)
             except Exception as e:
                 logging.error(e)
 
-def generate_text(name, content):
+def generate_text(name: str, content: str) -> str:
     return (
         'Hi {}! An alert was triggered with message:\n\n'
         '{}\n\n'
         'This is an automated message; please do not reply.'
     ).format(name, content)
 
-def generate_email(from_email, to_user, content):
+def generate_email(from_email: str, to_user: User, content: str) -> EmailMessage:
     body = (
         '<p><strong>Hi {}! Here is the daily report:</strong></p>'
         '<div id="report">{}</div>'
@@ -112,14 +117,14 @@ def generate_email(from_email, to_user, content):
 
     return email
 
-def validate_number(num):
-    return re.match(r'^\+[1-9]\d{1,14}$', num) is not None
+def validate_number(phone_number: str) -> bool:
+    return re.match(r'^\+[1-9]\d{1,14}$', phone_number) is not None
 
-def validate_email(email):    
+def validate_email(email: str) -> bool:    
     regexp = r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)'
     return re.match(regexp, email) is not None
 
-def main():
+def main() -> None:
     # Get list of users
     users = UserList()
 
@@ -128,8 +133,8 @@ def main():
     email.send('test')
 
     # Send a test text
-    # text = TextAlert()
-    # text.send('test')
+    text = TextAlert(users)
+    text.send('test')
 
 if __name__ == "__main__":
     main()
