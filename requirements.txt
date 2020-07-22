@@ -7,3 +7,6 @@ numpy >= 1.18.1
 "picamera[array]" >= 1.13
 opencv-python >= 4.2.0.32
 DateTime >= 4.3
+python-smbus
+i2c-tools
+
