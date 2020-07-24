@@ -5,6 +5,7 @@
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
+import os
 from datetime import datetime
 import cv2
 import cv2.aruco as aruco
@@ -54,4 +55,17 @@ class Camera:
                     time_passed.minute, "minute(s), and", 
                     time_passed.second, "second(s)" 
         
-        return time_str, time_passed          
+        return time_str, time_passed      
+
+def main() -> None:
+    path = os.path.dirname(os.path.abspath(__file__))
+    img_folder = os.path.join(path, "images")
+    cam = Camera()
+    for idx in range(0,10):
+        im, time = cam.cap_image()
+        cv2.imwrite(img_folder + str(idx) + "__" + str(time) + ".png", im)
+    
+    cam.vid_stream()
+
+if __name__ == "__main__":
+    main()

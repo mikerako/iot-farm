@@ -48,7 +48,14 @@ class EnvComboSensor(Sensor):
         bme_addr = 0x77 - index
         ccs_addr = 0x5B - index
 
-    def read_eCO2() -> TBD:
+    def read_eCO2() -> None:
+        pass
+
+    def read_temp():
+        pass
+
+    def read_humidity():
+        pass
 
     
 
