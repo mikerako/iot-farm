@@ -24,7 +24,7 @@ TODO
 
 ## Usage
 
-### Text Notifications
+### Email and Text Notifications
 
 In order for this feature to work properly, you will need to add a config file (`config.json`) to `src/alerts/text` which stores API credentials as well as users' names and phone numbers. Here is an example of what this file might look like:
 

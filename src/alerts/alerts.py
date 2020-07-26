@@ -18,7 +18,7 @@ with open(CONFIG_FILENAME) as f:
 
 '''Class for storing name, number, and email address.'''
 class User:
-    def __init__(self, params):
+    def __init__(self, params: dict):
         self.name = params['name']
         self.number = params['number']
         self.email = params['email']
@@ -30,27 +30,27 @@ class UserList:
         self.users = []
         self.add_users(CONFIG['users'])
     
-    def add_user(self, user_info):
+    def add_user(self, user_info: dict):
         if self.validate(user_info):
             self.users.append(User(user_info))
         else:
             logging.error('Improper formatting of user with name {}'.format(user_info['name']))
     
-    def add_users(self, users):
+    def add_users(self, users: list):
         for user_params in users:
             self.add_user(user_params)
 
-    def get_users(self):
+    def get_users(self) -> list:
         return self.users
     
-    def validate(self, user_info):
+    def validate(self, user_info: dict) -> bool:
         res = validate_number(user_info['number']) and validate_email(user_info['email'])
         return res
 
 
 '''Class for sending and creating email messages.'''
 class EmailAlert:
-    def __init__(self, users: UserList) -> None:
+    def __init__(self, users: UserList):
         email_info = CONFIG['email']
         self._username = email_info['username']
         self._password = email_info['password']
@@ -58,7 +58,7 @@ class EmailAlert:
         self._port = int(email_info['port'])
         self._users = users.get_users()
 
-    def send(self, message) -> None:
+    def send(self, message: str):
         # Create secure session with Gmail's SMTP server
         server = smtplib.SMTP(self._smtp, self._port)
         server.starttls()
@@ -79,13 +79,13 @@ class EmailAlert:
 
 '''Class for sending and creating text messages.'''
 class TextAlert:
-    def __init__(self, users: UserList) -> None:
+    def __init__(self, users: UserList):
         self._account_SID = CONFIG['twilio']['account_SID']
         self._auth_token = CONFIG['twilio']['auth_token']
         self._number = CONFIG['twilio']['sending_number']
         self._users = users.get_users()
 
-    def send(self, message: str) -> None:
+    def send(self, message: str):
         client = Client(self._account_SID, self._auth_token)
 
         for user in self._users:
@@ -139,7 +139,7 @@ def validate_email(email: str) -> bool:
     regexp = r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)'
     return re.match(regexp, email) is not None
 
-def main() -> None:
+def main():
     # Get list of users
     users = UserList()
 
