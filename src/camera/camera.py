@@ -42,20 +42,18 @@ class Camera:
             if key == ord("q"):
                 break
         end_time = datetime.now()
-        time_passed_str,_ = calculate_time_passed(start_time, end_time)
-        logging.debug("Video stream lasted", time_passed_str, "long")
+        time_passed_str = format_time(end_time - start_time)
+        logging.debug("Video stream lasted ", time_passed_str)
 
-    def calculate_time_passed(datetime start, datetime end):
-        time_passed = end - start_time
+    def format_time(time: datetime):        
+        time_str =  time.year, "year(s),",
+                    time.month, "month(s),", 
+                    time.day, "day(s),", 
+                    time.hour, "hour(s),", 
+                    time.minute, "minute(s), and", 
+                    time.second, "second(s)"
         
-        time_str =  time_passed.year, "year(s),",
-                    time_passed.month, "month(s),", 
-                    time_passed.day, "day(s),", 
-                    time_passed.hour, "hour(s),", 
-                    time_passed.minute, "minute(s), and", 
-                    time_passed.second, "second(s)" 
-        
-        return time_str, time_passed      
+        return time_str 
 
 def main() -> None:
     path = os.path.dirname(os.path.abspath(__file__))

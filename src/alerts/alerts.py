@@ -143,13 +143,13 @@ def main():
     # Get list of users
     users = UserList()
 
-    # Send a test email
+    # Send an email
     email = EmailAlert(users)
     email.send('test')
 
-    # Send a test text
-    # text = TextAlert(users)
-    # text.send('test')
+    # Send a text
+    text = TextAlert(users)
+    text.send('test')
 
 if __name__ == "__main__":
     main()
