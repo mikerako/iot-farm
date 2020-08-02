@@ -65,7 +65,7 @@ class Camera:
 
         print("days", days)
         print("hours", hours)
-        print("minuts", mins)
+        print("minutes", mins)
         print("seconds", secs)
 
         time_str = days, "day(s),", hours, "hour(s),", mins, "minute(s), and", secs, "second(s)"
