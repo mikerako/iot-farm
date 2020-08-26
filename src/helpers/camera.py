@@ -1,5 +1,8 @@
-# Camera picture-taking class
-# author: Michael Rakowiecki
+'''
+Camera class for monitoring the growing area.
+
+Author: Michael Rakowiecki
+'''
 
 # import the necessary packages
 from picamera.array import PiRGBArray
@@ -53,7 +56,7 @@ class Camera:
         print("Video stream lasted", time_passed_str)
         self.rawCapture = PiRGBArray(self.camera, size=(1920, 1080))
 
-    def format_time(self, time: datetime):
+    def format_time(self, time: datetime) -> str:
         tot_sec = time.total_seconds()
         days = tot_sec // 86400
         tot_sec -= 86400*days

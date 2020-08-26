@@ -1,7 +1,7 @@
 '''
-Module for handling text and email alerts.
+Module containing text and email notification classes for alerts.
 
-Author: Kevin Kraydich
+Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
 import json
@@ -12,13 +12,14 @@ from twilio.rest import Client
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-
 # Logging and config files
 # logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
-
-'''Class for sending and creating email messages.'''
 class EmailAlert:
+    '''
+    Class for sending and creating email messages.
+        email_info - Dictionary containing configuration info (login credentials, etc.)
+    '''
     def __init__(self, email_info: dict):
         self._username = email_info['username']
         self._password = email_info['password']
@@ -26,6 +27,11 @@ class EmailAlert:
         self._port = int(email_info['port'])
 
     def send(self, message: str, recipients: list):
+        '''
+        Send an HTML-formatted email over SMTP.
+            message - String containing the contents of the message
+            recipients - List of email addresses to send the email to
+        '''
         # Create secure session with Gmail's SMTP server
         server = smtplib.SMTP(self._smtp, self._port)
         server.starttls()
@@ -44,14 +50,22 @@ class EmailAlert:
             server.quit()
 
 
-'''Class for sending and creating text messages.'''
 class TextAlert:
+    '''
+    Class for sending and creating text messages.
+        twilio_info - Dictionary containing configuration info (login credentials, etc.)
+    '''
     def __init__(self, twilio_info):
         self._account_SID = twilio_info['account_SID']
         self._auth_token = twilio_info['auth_token']
         self._number = twilio_info['sending_number']
 
     def send(self, message: str, recipients: list):
+        '''
+        Send a text message over SMS.
+            message - String containing the contents of the message
+            recipients - List of phone numbers to send the text to
+        '''
         client = Client(self._account_SID, self._auth_token)
 
         for recipient in recipients:
@@ -69,6 +83,10 @@ class TextAlert:
 
 
 def generate_text(content: str) -> str:
+    '''
+    Generate a text based on a template with a simple prompt.
+        content - String containing the message
+    '''
     return (
         'An alert was triggered with message:\n\n'
         '{}\n\n'
@@ -76,6 +94,10 @@ def generate_text(content: str) -> str:
     ).format(content)
 
 def generate_email(content: str) -> MIMEMultipart:
+    '''
+    Generate an email based on an HTML template with a simple prompt.
+        content - String containing the message
+    '''
     # Create message container and header
     email = MIMEMultipart('alternative')
     email['Subject'] = 'Sensor Data Report'

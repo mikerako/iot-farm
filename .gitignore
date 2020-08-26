@@ -140,8 +140,7 @@ cython_debug/
 # VSCode folder
 .vscode/
 
-# Config file
+# Config files
 config.json
-
-# Phone numbers
-numbers.json
+client_secrets.json
+my_creds.txt

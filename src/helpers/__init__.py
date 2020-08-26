@@ -1,1 +1,5 @@
-print('__init__ from helpers/')
+'''
+Init file for helpers module.
+
+Author: Kevin Kraydich <kevin.kraydich@gmail.com>
+'''

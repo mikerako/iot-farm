@@ -1,6 +1,12 @@
+'''
+IoT Farm Python package configuration.
+
+Author: Kevin Kraydich <kevin.kraydich@gmail.com>
+'''
+
 from setuptools import setup
 
-with open('README', 'r') as f:
+with open('README.md', 'r') as f:
     long_description = f.read()
 
 setup(
@@ -15,7 +21,9 @@ setup(
         'python-dotenv',
         'google-api-python-client',
         'google-auth-httplib2',
-        'google-auth-oauthlib'
+        'google-auth-oauthlib',
+        'pydrive',
+        'Flask'
     ],
     scripts=[],
     python_requires='>=3.6',

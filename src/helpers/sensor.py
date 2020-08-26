@@ -1,15 +1,15 @@
+'''
+Sensor class for retrieving data, including temperature,
+eCO2, humidity, and barometric pressure.
+
+Author: Michael Rakowiecki
+'''
+
 import smbus
 import time
-from abc import ABC, abstractmethod
 
-class Sensor:
-    
-    # abstract method
-    def __init__(self) -> None:
-        # establish an address for the new sensor
-        pass
 
-class EnvComboSensor(Sensor):
+class EnvComboSensor:
     index = None
 
     # Register values for BME
@@ -62,8 +62,3 @@ class EnvComboSensor(Sensor):
 
     def read_humidity():
         pass
-
-    
-
-class SomeOtherSensor(Sensor):
-

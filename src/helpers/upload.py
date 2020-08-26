@@ -1,9 +1,18 @@
+'''
+Module that interfaces with Google Drive for uploading files and creating folders.
+
+Author: Kevin Kraydich <kevin.kraydich@gmail.com>
+'''
+
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import json
 
-
 class Uploader:
+    '''
+    Class that interfaces with Google Drive.
+        drive_info - Dictionary containing configuration info (login credentials, etc.)
+    '''
     def __init__(self, drive_info: dict):
         gauth = GoogleAuth()
         gauth.LoadCredentialsFile(drive_info['credentials'])
@@ -11,6 +20,11 @@ class Uploader:
         self._parent_id = drive_info['parent_folder']
         
     def upload_file(self, filename: str, parent_id = None) -> None:
+        '''
+        Upload a file to Google Drive.
+            filename - The name of the file to upload
+            parent_id - The ID of the new file's parent directory; by default, this is the root directory.
+        '''
         metadata = {}
 
         if parent_id:
@@ -26,6 +40,10 @@ class Uploader:
         fi.Upload()
     
     def create_folder(self, filename: str):
+        '''
+        Creates a folder in Google Drive. Returns the ID of the newly created folder.
+            filename - Name of the folder to be created
+        '''
         metadata = {
             'title': filename,
             'mimeType': 'application/vnd.google-apps.folder',
@@ -41,11 +59,3 @@ class Uploader:
         folder.Upload()
 
         return str(folder['id'])
-
-# def main():
-#     up = Uploader()
-#     folder_id = up.create_folder('2020_08_01')
-#     up.upload_file('hello.txt', folder_id)
-
-# if __name__ == "__main__":
-#     main()

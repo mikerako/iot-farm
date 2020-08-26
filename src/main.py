@@ -1,13 +1,18 @@
+'''
+Driver code for IoT farm back-end.
+
+Author: Kevin Kraydich <kevin.kraydich@gmail.com>
+'''
+
 from helpers import alerts, upload, user
 import json
-
 
 with open('config.json') as f:
     CONFIG = json.load(f)
 
-
 def main():
-    users = user.UserList(CONFIG['alerts']['users'])
+    # Create users, text/email alerts, and uploader objects
+    users = user.Users(CONFIG['alerts']['users'])
     text = alerts.TextAlert(CONFIG['alerts']['twilio'])
     email = alerts.EmailAlert(CONFIG['alerts']['email'])
     uploader = upload.Uploader(CONFIG['upload'])

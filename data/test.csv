@@ -1,0 +1,4 @@
+timestamp,temperature,humidity,co2,pressure
+04:20:00,70,5,5,1.5
+04:20:01,71,5,5,1.6
+04:20:02,73,5,5,1.4
