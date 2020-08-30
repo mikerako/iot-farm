@@ -23,7 +23,8 @@ setup(
         'google-auth-httplib2',
         'google-auth-oauthlib',
         'pydrive',
-        'Flask'
+        'Flask',
+        'matplotlib'
     ],
     scripts=[],
     python_requires='>=3.6',

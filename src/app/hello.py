@@ -1,16 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
 import csv
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    data = []
-    filename = 'data/test.csv'
-    with open(filename) as f:
-        csv_reader = csv.reader(f)
+def frontpage():
+    params = {}
+    params['message'] = 'Hello world!'
 
-    return "Hello world!"
+    return render_template('index.html', context=params)
 
 if __name__ == "__main__":
     app.run()

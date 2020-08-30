@@ -57,8 +57,8 @@ class EnvComboSensor:
     def read_eCO2() -> None:
         pass
 
-    def read_temp():
+    def read_temp() -> None:
         pass
 
-    def read_humidity():
+    def read_humidity() -> None:
         pass
