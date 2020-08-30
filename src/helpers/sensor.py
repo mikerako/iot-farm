@@ -31,22 +31,23 @@ class EnvComboSensor:
         'id': 0xD0
     }
 
+    # Register values for CCS
     ccs = {
-        'addr' = 0x00               # default is 0x5B
-        'status' = 0x00             # R; 1b status
-        'meas_mode' = 0x01          # R/W; 1b meas mode and conditions register
-        'alg_data' = 0x02           # R; up to 8b. 2 most signifiicant bytes are ppm estim
-        'raw_data' = 0x03           # R; 2b raw ADC values
-        'env_data' = 0x05           # W; 4b temp & hum data for compensation
-        'NTC' = 0x06                # R; 4b voltage to calc ambient temp
-        'thresholds' = 0x10         # W; 5b thresholds if using interrupt mode
-        'baseline' = 0x11           # R/W; 2b read current baseline or write new baseline
-        'hw_id' = 0x20              # R; 1b hardware ID (0x81)
-        'hw_version' = 0x21         # R; 1b hardware version
-        'fw_boot_version' = 0x23    # R; 2b of fw version
-        'fw_app_version' = 0x24     # R; 2b of fw version
-        'error_id' = 0xE0           # R; 1b saying error source
-        'sw_reset' = 0xFF           # W; 4b write to reset device
+        'addr': 0x00,               # default is 0x5B
+        'status': 0x00,             # R; 1b status
+        'meas_mode': 0x01,          # R/W; 1b meas mode and conditions register
+        'alg_data': 0x02,           # R; up to 8b. 2 most signifiicant bytes are ppm estim
+        'raw_data': 0x03,           # R; 2b raw ADC values
+        'env_data': 0x05,           # W; 4b temp & hum data for compensation
+        'NTC': 0x06,                # R; 4b voltage to calc ambient temp
+        'thresholds': 0x10,         # W; 5b thresholds if using interrupt mode
+        'baseline': 0x11,           # R/W; 2b read current baseline or write new baseline
+        'hw_id': 0x20,              # R; 1b hardware ID (0x81)
+        'hw_version': 0x21,         # R; 1b hardware version
+        'fw_boot_version': 0x23,    # R; 2b of fw version
+        'fw_app_version': 0x24,     # R; 2b of fw version
+        'error_id': 0xE0,           # R; 1b saying error source
+        'sw_reset': 0xFF            # W; 4b write to reset device
     }
 
     '''Init fn of environmental combo sensor. Max 2 devices on 1 i2c bus'''

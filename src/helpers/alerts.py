@@ -11,6 +11,14 @@ import smtplib
 from twilio.rest import Client
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+env = Environment(
+    loader=FileSystemLoader(os.path.join(os.getcwd(), 'templates')),
+    autoescape=select_autoescape(['html', 'xml'])
+)
+
 
 # Logging and config files
 # logging.basicConfig(filename='output.log',level=logging.DEBUG)
@@ -26,10 +34,10 @@ class EmailAlert:
         self._smtp = email_info['smtp']
         self._port = int(email_info['port'])
 
-    def send(self, message: str, recipients: list):
+    def send(self, context: dict, recipients: list):
         '''
         Send an HTML-formatted email over SMTP.
-            message - String containing the contents of the message
+            context - Dictionary containing the contents of the message
             recipients - List of email addresses to send the email to
         '''
         # Create secure session with Gmail's SMTP server
@@ -37,14 +45,16 @@ class EmailAlert:
         server.starttls()
         server.login(self._username, self._password)
 
-        email = generate_email(message)
+        email = generate_email(context)
 
         try: 
-            response = server.sendmail(self._username, recipients, email.as_string())
+            response = server.sendmail(self._username, recipients, email.as_bytes())
+            print('hi')
             if response:
                 pass
-                logging.debug('Could not send email to: {}'.format(response))
         except Exception as e:
+            print('hey')
+            print(e)
             logging.error(e)
         finally:
             server.quit()
@@ -93,28 +103,26 @@ def generate_text(content: str) -> str:
         'This is an automated message; please do not reply.'
     ).format(content)
 
-def generate_email(content: str) -> MIMEMultipart:
+def generate_email(context: dict) -> MIMEMultipart:
     '''
     Generate an email based on an HTML template with a simple prompt.
-        content - String containing the message
+        content - Dictionary containing message contents
     '''
     # Create message container and header
     email = MIMEMultipart('alternative')
     email['Subject'] = 'Sensor Data Report'
 
     # Create HTML email contents
-    html = (
-        '<html>'
-        '<head></head>'
-        '<body>'
-        '<p><strong>Here is the daily report:</strong></p>'
-        '<div id="report">{}</div>'
-        '<p><strong>This is an automated message; please do not reply.</strong></p>'
-        '</body>'
-        '</html>'
-    ).format(content)
+    template = env.get_template('report.html')
+    html = template.render(context)
 
     text = MIMEText(html, 'html')
     email.attach(text)
+
+    for graph in context['graphs']:
+        with open(graph, 'rb') as fi:
+            img = MIMEImage(fi.read())
+            img.add_header('Content-ID', '<{}>'.format(graph))
+            email.attach(img)
 
     return email
