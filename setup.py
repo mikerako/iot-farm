@@ -24,7 +24,8 @@ setup(
         'google-auth-oauthlib',
         'pydrive',
         'Flask',
-        'matplotlib'
+        'matplotlib',
+        'schedule'
     ],
     scripts=[],
     python_requires='>=3.6',

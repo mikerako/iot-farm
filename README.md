@@ -3,7 +3,8 @@
 Small farming project that relies on feedback from sensors to control parameters for optimal plant growth.
 
 ## Authors
-AJ Kingsley, Kevin Kraydich, and Michael Rakowiecki
+Kevin Kraydich <kevin.kraydich@gmail.com>
+Michael Rakowiecki
 
 ## Overview
 
