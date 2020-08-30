@@ -12,7 +12,7 @@ import time
 with open('config.json') as f:
     CONFIG = json.load(f)
 
-def email(recipients: list):
+def job_email(recipients: list):
     csv_processor = csv.CSVProcessor('data/random.csv')
 
     context = {
@@ -23,24 +23,24 @@ def email(recipients: list):
     email = alerts.EmailAlert(CONFIG['alerts']['email'])
     email.send(context, recipients)
 
-def text():
+def job_text():
+    # TODO - finish
     text = alerts.TextAlert(CONFIG['alerts']['twilio'])
 
-def job():
-    # Create users, text/email alerts, and uploader objects
-    uploader = upload.Uploader(CONFIG['upload'])
+def job_upload():
+    up = upload.Uploader(CONFIG['upload'])
+    folder_name = time.strftime('%Y_%m_%d')
+    folder_id = up.create_folder(folder_name)
+    up.upload_file('data/random.csv', folder_id)
 
-    # text.send('test', users.get_numbers())
-    # email.send('test', users.get_emails())
-
-    # folder_id = up.create_folder('2020_08_01')
-    # up.upload_file('hello.txt', folder_id)
+    # TODO - delete files after they've been uploaded to Google Drive
 
 def main():
     users = user.Users(CONFIG['alerts']['users'])
 
     # TODO - add scheduled tasks
-    schedule.every().day.at('8:30').do(email, recipients=users.get_emails())
+    schedule.every().day.at('00:00').do(job_upload)
+    schedule.every().day.at('8:30').do(job_email, recipients=users.get_emails())
 
     while True:
         schedule.run_pending()

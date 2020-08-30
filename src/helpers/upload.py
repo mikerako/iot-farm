@@ -7,6 +7,7 @@ Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import json
+import os
 
 class Uploader:
     '''
@@ -31,11 +32,12 @@ class Uploader:
             metadata['parents'] = [
                 {
                     "kind": "drive#fileLink",
-                    "id": parent_id
+                    "id": parent_id,
                 }
             ]
 
         fi = self._drive.CreateFile(metadata)
+        fi['title'] = os.path.basename(filename)
         fi.SetContentFile(filename)
         fi.Upload()
     
