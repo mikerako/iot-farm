@@ -144,3 +144,7 @@ cython_debug/
 config.json
 client_secrets.json
 my_creds.txt
+
+# Images and other data
+*.png
+*.csv
