@@ -39,8 +39,9 @@ def main():
     users = user.Users(CONFIG['alerts']['users'])
 
     # TODO - add scheduled tasks
-    schedule.every().day.at('00:00').do(job_upload)
-    schedule.every().day.at('8:30').do(job_email, recipients=users.get_emails())
+    # schedule.every().day.at('00:00').do(job_upload)
+    # schedule.every().day.at('8:30').do(job_email, recipients=users.get_emails())
+    schedule.every(5).seconds.do(job_email, recipients=users.get_emails())
 
     while True:
         schedule.run_pending()

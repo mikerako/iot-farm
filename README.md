@@ -3,7 +3,7 @@
 Small farming project that relies on feedback from sensors to control parameters for optimal plant growth.
 
 ## Authors
-Kevin Kraydich <kevin.kraydich@gmail.com>
+Kevin Kraydich <kevin.kraydich@gmail.com><br>
 Michael Rakowiecki
 
 ## Overview
@@ -11,8 +11,6 @@ Michael Rakowiecki
 TODO
 
 ## Hardware
-
-The hardware used for this project includes:
 
 1x  [Raspberry Pi 4](https://www.amazon.com/Raspberry-Model-2019-Quad-Bluetooth/dp/B07TD42S27/)<br>
 2x  [CO<sub>2</sub>, Humidity, Temperature, and Barometric Pressure Sensors](https://www.amazon.com/gp/product/B076955G5S/)<br>

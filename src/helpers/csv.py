@@ -24,10 +24,12 @@ class CSVProcessor:
             ]
         ]
 
+        if not os.path.exists('images'):
+            os.mkdir('images')
+
         for prop in properties:
             graph_data(self._data['timestamp'], self._data[prop.name], time, prop)
             filename = os.path.join(os.getcwd(), 'images/{}.png'.format(prop.name))
-            print(filename)
             graph_filenames.append(filename)
 
         return graph_filenames

@@ -38,7 +38,7 @@ class Users:
             self._users.append(User(user_info))
         else:
             pass
-            # logging.error('Improper formatting of user with name {}'.format(user_info['name']))
+            logging.error('Improper formatting of user with name {}'.format(user_info['name']))
 
     def get_emails(self) -> list:
         '''

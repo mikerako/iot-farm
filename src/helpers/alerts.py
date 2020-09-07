@@ -19,7 +19,6 @@ env = Environment(
     autoescape=select_autoescape(['html', 'xml'])
 )
 
-
 # Logging and config files
 # logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
@@ -49,12 +48,9 @@ class EmailAlert:
 
         try: 
             response = server.sendmail(self._username, recipients, email.as_bytes())
-            print('hi')
             if response:
-                pass
+                logging.debug(response)
         except Exception as e:
-            print('hey')
-            print(e)
             logging.error(e)
         finally:
             server.quit()
@@ -87,7 +83,7 @@ class TextAlert:
                     to = recipient
                 )
                 if response['error_code'] != 'null':
-                    print(response)
+                    logging.debug(response)
             except Exception as e:
                 logging.error(e)
 
@@ -120,9 +116,12 @@ def generate_email(context: dict) -> MIMEMultipart:
     email.attach(text)
 
     for graph in context['graphs']:
+        print(graph)
         with open(graph, 'rb') as fi:
             img = MIMEImage(fi.read())
-            img.add_header('Content-ID', '<{}>'.format(graph))
+            name = os.path.basename(graph)
+            img.add_header('Content-ID', '<{}>'.format(name))
+            img.add_header('Content-Disposition', 'inline', filename=name)
             email.attach(img)
 
     return email
