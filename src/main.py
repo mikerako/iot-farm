@@ -47,7 +47,7 @@ def main():
     users = user.Users(CONFIG['alerts']['users'])
 
     # TODO - add scheduled tasks
-    schedule.every().day.at('00:01').do(job_upload)
+    schedule.every().day.at('11:55').do(job_upload)
     schedule.every().day.at('08:30').do(job_email, recipients=users.get_emails())
     schedule.every(60).seconds.do(job_read)
 

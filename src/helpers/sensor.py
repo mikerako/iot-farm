@@ -1,12 +1,14 @@
 '''
 Sensor class for retrieving data, including temperature,
-eCO2, humidity, and barometric pressure.
+eCO2, relative humidity, and barometric pressure.
 
-Author: Michael Rakowiecki
+Authors:
+Michael Rakowiecki
+Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
-import smbus
-import time
+import smbus2
+import bme280
 
 
 class EnvComboSensor:
@@ -55,11 +57,21 @@ class EnvComboSensor:
         self.bme_addr = 0x77 - index
         self.ccs_addr = 0x5B - index
 
-    def read_eCO2() -> None:
+    def read_eCO2(self) -> None:
         pass
 
-    def read_temp() -> None:
+    def read_temp(self) -> None:
         pass
 
-    def read_humidity() -> None:
+    def read_humidity(self) -> None:
         pass
+
+port = 1
+address = 0x77
+bus = smbus2.SMBus(port)
+
+calibration_params = bme280.load_calibration_params(bus, address)
+
+data = bme280.sample(bus, address, calibration_params)
+
+print(data.temperature)
