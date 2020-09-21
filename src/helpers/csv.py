@@ -35,6 +35,7 @@ class CSVProcessor:
 
 def graph_data(xdata: np.array, ydata: np.array, xprop: Property, yprop: Property):
     plt.plot(xdata, ydata)
+    plt.xticks(['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'])
     plt.xlabel('{} ({})'.format(xprop.name, xprop.unit))
     plt.ylabel('{} ({})'.format(yprop.name, yprop.unit))
     plt.title('{} as a function of {}'.format(yprop.name, xprop.name))

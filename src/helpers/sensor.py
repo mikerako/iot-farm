@@ -25,7 +25,7 @@ class EnvComboSensor:
 
         return {
             'id': output.id,
-            'timestamp': output.timestamp.strftime(%H:%M:%S),
+            'timestamp': output.timestamp.strftime('%H:%M:%S'),
             'temperature': output.temperature * (9/5) + 32,
             'pressure': output.pressure,
             'humidity': output.humidity
