@@ -56,22 +56,13 @@ class EnvComboSensor:
     def __init__(self, index=0) -> None:
         self.bme_addr = 0x77 - index
         self.ccs_addr = 0x5B - index
+        self.bus = smbus2.SMBus(1)
 
-    def read_eCO2(self) -> None:
-        pass
+    def read_bme280(self) -> dict:
+        calibration_params = bme280.load_calibration_params(self.bus, self.bme_addr)
+        data = bme280.sample(self.bus, self.bme_addr, calibration_params)
+        
+        print(data)
 
-    def read_temp(self) -> None:
-        pass
-
-    def read_humidity(self) -> None:
-        pass
-
-port = 1
-address = 0x77
-bus = smbus2.SMBus(port)
-
-calibration_params = bme280.load_calibration_params(bus, address)
-
-data = bme280.sample(bus, address, calibration_params)
-
-print(data.temperature)
+sensor = EnvComboSensor(0)
+sensor.read_bme280()
