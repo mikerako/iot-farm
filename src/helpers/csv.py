@@ -17,10 +17,9 @@ class CSVProcessor:
         time = Property('time', 'HR:MIN:SEC')
         properties = [
             Property(name, unit) for name, unit in [
-                ('temperature', '°C'),
+                ('temperature', '°F'),
                 ('humidity', 'RH'),
-                ('pressure', 'Pa'),
-                ('co2', 'ppm')
+                ('pressure', 'hPa')
             ]
         ]
 
