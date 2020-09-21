@@ -25,7 +25,7 @@ class EnvComboSensor:
 
         return {
             'id': output.id,
-            'timestamp': output.timestamp,
+            'timestamp': output.timestamp.split()[1][:8],
             'temperature': output.temperature * (9/5) + 32,
             'pressure': output.pressure,
             'humidity': output.humidity
