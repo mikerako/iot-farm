@@ -9,7 +9,6 @@ Kevin Kraydich <kevin.kraydich@gmail.com>
 
 import smbus2
 import bme280
-from sensor_reading import SensorReading
 
 class EnvComboSensor:
 
