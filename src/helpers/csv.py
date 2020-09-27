@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib import dates
 import numpy as np
 import os
 
@@ -34,8 +35,12 @@ class CSVProcessor:
         return graph_filenames
 
 def graph_data(xdata: np.array, ydata: np.array, xprop: Property, yprop: Property):
-    plt.plot(xdata, ydata)
-    plt.xticks(['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'])
+    fig, ax = plt.subplots()
+    ax.plot(xdata, ydata)
+
+    loc = dates.AutoDateLocator()
+    ax.xaxis.set_major_locator(loc)
+
     plt.xlabel('{} ({})'.format(xprop.name, xprop.unit))
     plt.ylabel('{} ({})'.format(yprop.name, yprop.unit))
     plt.title('{} as a function of {}'.format(yprop.name, xprop.name))
