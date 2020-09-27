@@ -25,7 +25,6 @@ def job_read(sensors: list, files: list) -> None:
         f = open(files[i], 'a')
         f.write(line)
         f.close()
-    print('read the sensor!')
 
 def job_text() -> None:
     # TODO - finish
@@ -41,7 +40,6 @@ def job_email(recipients: list) -> None:
 
     email = alerts.EmailAlert(CONFIG['alerts']['email'])
     email.send(context, recipients)
-    print('emailed people!')
 
 def job_upload(files: list) -> None:
     up = upload.Uploader(CONFIG['upload'])
@@ -51,7 +49,6 @@ def job_upload(files: list) -> None:
     for fi in files:
         up.upload_file(fi, folder_id)
         reset_file(fi)
-    print('uploaded!') 
 
 def get_filename(i: int) -> str:
     return 'data_{}.csv'.format(i)
@@ -72,12 +69,9 @@ def main():
     for f in csv_files:
         reset_file(f)
 
-    # TODO - add scheduled tasks
-    # schedule.every().day.at('23:55').do(job_upload)
-    schedule.every(1).seconds.do(job_read, sensors=sensors, files=csv_files)
-    # schedule.every().day.at('08:30').do(job_email, recipients=users.get_emails())
-    schedule.every(15).seconds.do(job_email, recipients=users.get_emails())
-    schedule.every(20).seconds.do(job_upload, files=csv_files)
+    schedule.every(30).seconds.do(job_read, sensors=sensors, files=csv_files)
+    schedule.every().day.at('23:55').do(job_email, recipients=users.get_emails())
+    schedule.every().day.at('23:58').do(job_upload)
 
     while True:
         schedule.run_pending()
