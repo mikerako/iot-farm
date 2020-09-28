@@ -10,7 +10,7 @@ import schedule
 import time
 import os
 
-with open('config.json') as f:
+with open('config-kevin.json') as f:
     CONFIG = json.load(f)
 
 def job_read(sensors: list, files: list) -> None:
@@ -71,7 +71,7 @@ def main():
 
     schedule.every(30).seconds.do(job_read, sensors=sensors, files=csv_files)
     schedule.every().day.at('23:55').do(job_email, recipients=users.get_emails())
-    schedule.every().day.at('23:58').do(job_upload)
+    schedule.every().day.at('23:59').do(job_upload, files=csv_files)
 
     while True:
         schedule.run_pending()
