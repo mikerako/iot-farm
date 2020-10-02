@@ -4,7 +4,7 @@ Driver code for IoT farm back-end.
 Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
-from helpers import alerts, upload, user, csv, sensor
+from helpers import alerts, upload, user, csv, sensor, camera
 import json
 import schedule
 import time
@@ -41,6 +41,14 @@ def job_email(recipients: list) -> None:
     email = alerts.EmailAlert(CONFIG['alerts']['email'])
     email.send(context, recipients)
 
+def job_picture():
+    # TODO - finish
+    pass
+
+def job_vid_stream():
+    # TODO - finish
+    pass
+
 def job_upload(files: list) -> None:
     up = upload.Uploader(CONFIG['upload'])
     folder_name = time.strftime('%Y_%m_%d')
@@ -65,6 +73,7 @@ def main():
     users = user.Users(CONFIG['alerts']['users'])
     sensors = [sensor.EnvComboSensor(0)]
     csv_files = [os.path.join('data', get_filename(i)) for i in range(len(sensors))]
+    cam = camera.Camera()
 
     for f in csv_files:
         reset_file(f)

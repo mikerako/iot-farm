@@ -33,8 +33,12 @@ class Camera:
         #     dtime.month, dtime.day, dtime.hour, dtime.minute, dtime.second)
         # return image, dtime
         self.camera.start_preview()
-        self.camera.capture('/home/pi/Desktop/image_test.jpg')
+        time.sleep(2)
+        #self.camera.capture('/home/pi/Desktop/image_test.jpg')
+        with PiRGBArray(self.camera) as stream:
+            self.camera.capture(stream, format='bgr')
         self.camera.stop_preview()
+        return image
 
     def vid_stream(self):
         self.camera.resolution = (640, 480)
@@ -80,10 +84,11 @@ def main() -> None:
     img_folder = os.path.join(path, "images")
     cam = Camera()
     for idx in range(0,10):
-        cam.cap_image()
+        im = cam.cap_image()
         # im, time = cam.cap_image()
-        # cv2.imwrite(img_folder + str(idx) + "__" + str(time) + ".png", im)
-    
+        cv2.imwrite(img_folder + str(idx) + "__" + str(time) + ".png", im)
+        time.sleep(5)
+
     cam.vid_stream()
 
 if __name__ == "__main__":
