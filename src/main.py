@@ -5,10 +5,13 @@ Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
 from helpers import alerts, upload, user, csv, sensor
+import logging
 import json
 import schedule
 import time
 import os
+
+logging.basicConfig(level=logging.INFO)
 
 with open('config-kevin.json') as f:
     CONFIG = json.load(f)
@@ -25,10 +28,13 @@ def job_read(sensors: list, files: list) -> None:
         f = open(files[i], 'a')
         f.write(line)
         f.close()
+    logging.info('Completed a sensor read job')
 
 def job_text() -> None:
     # TODO - finish
     text = alerts.TextAlert(CONFIG['alerts']['twilio'])
+    logging.info('Completed a text job')
+
 
 def job_email(recipients: list) -> None:
     csv_processor = csv.CSVProcessor('data/data_0.csv')
@@ -40,6 +46,7 @@ def job_email(recipients: list) -> None:
 
     email = alerts.EmailAlert(CONFIG['alerts']['email'])
     email.send(context, recipients)
+    logging.info('Completed an email job')
 
 def job_upload(files: list) -> None:
     up = upload.Uploader(CONFIG['upload'])
@@ -49,6 +56,7 @@ def job_upload(files: list) -> None:
     for fi in files:
         up.upload_file(fi, folder_id)
         reset_file(fi)
+    logging.info('Completed an upload job')
 
 def get_filename(i: int) -> str:
     return 'data_{}.csv'.format(i)
@@ -60,6 +68,7 @@ def reset_file(path: str) -> None:
     f = open(path, 'a')
     f.write('timestamp,temperature,humidity,pressure\n')
     f.close()
+    logging.info('Reset {}'.format(path))
 
 def main():
     users = user.Users(CONFIG['alerts']['users'])
