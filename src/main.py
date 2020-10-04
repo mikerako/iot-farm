@@ -4,12 +4,8 @@ Driver code for IoT farm back-end.
 Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
-<<<<<<< HEAD
 from helpers import alerts, upload, user, csv, sensor
 import logging
-=======
-from helpers import alerts, upload, user, csv, sensor, camera
->>>>>>> 24b5598f31866837316ecdf956b39da8f6168c4e
 import json
 import schedule
 import time
