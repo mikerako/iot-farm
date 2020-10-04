@@ -4,14 +4,14 @@ Driver code for IoT farm back-end.
 Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
-from helpers import alerts, upload, user, csv, sensor
+from helpers import alerts, upload, user, csv, sensor, camera
 import logging
 import json
 import schedule
 import time
 import os
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, filename='../log/log.out')
 
 with open('config-kevin.json') as f:
     CONFIG = json.load(f)
@@ -95,7 +95,7 @@ def main():
         try:
             schedule.run_pending()
             time.sleep(1)
-        catch(e):
+        except Exception as e:
             logging.debug(e)
 
 if __name__ == "__main__":
