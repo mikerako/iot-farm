@@ -96,8 +96,11 @@ def main():
     schedule.every().day.at("23:59").do(job_upload, files=csv_files)
 
     while True:
-        schedule.run_pending()
-        time.sleep(1)
+        try:
+            schedule.run_pending()
+            time.sleep(1)
+        catch(e):
+            logging.debug(e)
 
 if __name__ == "__main__":
     main()
