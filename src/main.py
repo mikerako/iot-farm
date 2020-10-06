@@ -17,8 +17,7 @@ os.chdir('../')
 SOURCE_PATH = os.path.join(os.getcwd(), 'src')
 DATA_PATH = os.path.join(os.getcwd(), 'data')
 LOG_PATH = os.path.join(os.getcwd(), 'log')
-
-logging.basicConfig(level=logging.INFO, filename=os.path.join(LOG_PATH, 'log.out'))
+logging.basicConfig(level=logging.INFO, filename=os.path.join(LOG_PATH, '{}.log'.format(time.strftime('%Y_%m_%d'))))
 
 
 with open(os.path.join(SOURCE_PATH, 'config-kevin.json')) as f:

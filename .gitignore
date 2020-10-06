@@ -148,3 +148,5 @@ my_creds.txt
 # Images and other data
 *.png
 *.csv
+log/
+data/
