@@ -16,6 +16,7 @@ class CSVProcessor:
     def make_graphs(self):
         graph_filenames = []
         time = Property('time', 'HR:MIN:SEC')
+        time_data = [dates.datestr2num(x) for x in self._data['timestamp']])
         properties = [
             Property(name, unit) for name, unit in [
                 ('temperature', '°F'),
@@ -28,7 +29,7 @@ class CSVProcessor:
             os.mkdir('images')
 
         for prop in properties:
-            graph_data(self._data['timestamp'], self._data[prop.name], time, prop)
+            graph_data(time_data, self._data[prop.name], time, prop)
             filename = os.path.join(os.getcwd(), 'images/{}.png'.format(prop.name))
             graph_filenames.append(filename)
 

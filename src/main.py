@@ -4,16 +4,24 @@ Driver code for IoT farm back-end.
 Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
-from helpers import alerts, upload, user, csv, sensor, camera
+from helpers import alerts, upload, user, csv, sensor # , camera
 import logging
 import json
 import schedule
 import time
 import os
 
-logging.basicConfig(level=logging.INFO, filename='../log/log.out')
+# Assumes the system's current directory is iot-farm/src
+os.chdir('../')
 
-with open('config-kevin.json') as f:
+SOURCE_PATH = os.path.join(os.getcwd(), 'src')
+DATA_PATH = os.path.join(os.getcwd(), 'data')
+LOG_PATH = os.path.join(os.getcwd(), 'log')
+
+logging.basicConfig(level=logging.INFO, filename=os.path.join(LOG_PATH, 'log.out'))
+
+
+with open(os.path.join(SOURCE_PATH, 'config-kevin.json')) as f:
     CONFIG = json.load(f)
 
 def job_read(sensors: list, files: list) -> None:
@@ -37,7 +45,9 @@ def job_text() -> None:
 
 
 def job_email(recipients: list) -> None:
-    csv_processor = csv.CSVProcessor('data/data_0.csv')
+    # file_paths = [os.path.join(DATA_PATH, get_filename(i) for i in range(num_sensors)]
+    file_path = os.path.join(DATA_PATH, get_filename(0))
+    csv_processor = csv.CSVProcessor(file_path)
 
     context = {
         'date': time.strftime('%A, %B %d'),
@@ -81,8 +91,8 @@ def reset_file(path: str) -> None:
 def main():
     users = user.Users(CONFIG['alerts']['users'])
     sensors = [sensor.EnvComboSensor(0)]
-    csv_files = [os.path.join('data', get_filename(i)) for i in range(len(sensors))]
-    cam = camera.Camera()
+    csv_files = [os.path.join(DATA_PATH, get_filename(i)) for i in range(len(sensors))]
+    # cam = camera.Camera()
 
     for f in csv_files:
         reset_file(f)
