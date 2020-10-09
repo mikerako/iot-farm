@@ -98,7 +98,7 @@ def main():
 
     schedule.every(10).seconds.do(job_read, sensors=sensors, files=csv_files)
     # schedule.every().day.at("23:55").do(job_email, recipients=users.get_emails())
-    schedule.every(30).do(job_email, recipients=users.get_emails())
+    schedule.every(30).seconds.do(job_email, recipients=users.get_emails())
     # schedule.every().day.at("23:59").do(job_upload, files=csv_files)
     schedule.every(30).seconds.do(job_upload, files=csv_files)
 

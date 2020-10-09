@@ -17,7 +17,7 @@ class CSVProcessor:
     def make_graphs(self):
         graph_filenames = []
         time = Property('time', 'HR:MIN:SEC')
-        time_data = [dates.datestr2num(x) for x in self._data['timestamp']])
+        time_data = [dates.datestr2num(x) for x in self._data['timestamp']]
         properties = [
             Property(name, unit) for name, unit in [
                 ('temperature', '°F'),

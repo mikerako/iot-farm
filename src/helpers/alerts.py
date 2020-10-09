@@ -19,8 +19,6 @@ env = Environment(
     autoescape=select_autoescape(['html', 'xml'])
 )
 
-# Logging and config files
-# logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
 class EmailAlert:
     '''
@@ -49,9 +47,11 @@ class EmailAlert:
         try:
             response = server.sendmail(self._username, recipients, email.as_bytes())
             if response:
-                logging.debug(response)
+                print(response)
+                # logging.debug(response)
         except Exception as e:
-            logging.error(e)
+            print(e)
+            # logging.error(e)
         finally:
             server.quit()
 

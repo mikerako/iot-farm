@@ -141,7 +141,7 @@ cython_debug/
 .vscode/
 
 # Config files
-config.json
+config*.json
 client_secrets.json
 my_creds.txt
 
