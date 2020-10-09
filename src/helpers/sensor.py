@@ -30,11 +30,11 @@ class EnvComboSensor:
             'pressure': output.pressure,
             'humidity': output.humidity
         }
-    
+
     '''Returns values from the CCS811 sensor.'''
     def read_ccs(self) -> dict:
         pass
-        
+
 
 sensor = EnvComboSensor(0)
 sensor.read_bme()

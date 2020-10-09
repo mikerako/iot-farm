@@ -9,10 +9,11 @@ class Property:
         self.unit = unit
 
 class CSVProcessor:
-    def __init__(self, filename: str):
+    def __init__(self, directory: str, filename: str):
+        self._directory = directory
         self._filename = filename
         self._data = np.genfromtxt(filename, delimiter=',', dtype=None, names=True, encoding=None)
-    
+
     def make_graphs(self):
         graph_filenames = []
         time = Property('time', 'HR:MIN:SEC')
@@ -25,17 +26,20 @@ class CSVProcessor:
             ]
         ]
 
-        if not os.path.exists('images'):
-            os.mkdir('images')
+        image_path = os.path.join(self._directory, 'images')
+        if not os.path.exists(image_path):
+            os.mkdir(image_path)
 
         for prop in properties:
             graph_data(time_data, self._data[prop.name], time, prop)
-            filename = os.path.join(os.getcwd(), 'images/{}.png'.format(prop.name))
+            filename = os.path.join(self._directory, '{}.png'.format(prop.name))
             graph_filenames.append(filename)
 
         return graph_filenames
 
 def graph_data(xdata: np.array, ydata: np.array, xprop: Property, yprop: Property):
+    graph_path = os.path.join(self._directory, '{}.png'.format(yprop.name))
+
     fig, ax = plt.subplots()
     ax.plot(xdata, ydata)
 
@@ -45,5 +49,5 @@ def graph_data(xdata: np.array, ydata: np.array, xprop: Property, yprop: Propert
     plt.xlabel('{} ({})'.format(xprop.name, xprop.unit))
     plt.ylabel('{} ({})'.format(yprop.name, yprop.unit))
     plt.title('{} as a function of {}'.format(yprop.name, xprop.name))
-    plt.savefig('images/{}.png'.format(yprop.name))
+    plt.savefig(graph_path)
     plt.close()

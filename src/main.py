@@ -46,7 +46,7 @@ def job_text() -> None:
 def job_email(recipients: list) -> None:
     # file_paths = [os.path.join(DATA_PATH, get_filename(i) for i in range(num_sensors)]
     file_path = os.path.join(DATA_PATH, get_filename(0))
-    csv_processor = csv.CSVProcessor(file_path)
+    csv_processor = csv.CSVProcessor(DATA_PATH, file_path)
 
     context = {
         'date': time.strftime('%A, %B %d'),
@@ -81,7 +81,7 @@ def get_filename(i: int) -> str:
 def reset_file(path: str) -> None:
     if os.path.isfile(path):
         os.remove(path)
-    
+
     f = open(path, 'a')
     f.write('timestamp,temperature,humidity,pressure\n')
     f.close()
@@ -96,9 +96,11 @@ def main():
     for f in csv_files:
         reset_file(f)
 
-    schedule.every(30).seconds.do(job_read, sensors=sensors, files=csv_files)
-    schedule.every().day.at("23:55").do(job_email, recipients=users.get_emails())
-    schedule.every().day.at("23:59").do(job_upload, files=csv_files)
+    schedule.every(10).seconds.do(job_read, sensors=sensors, files=csv_files)
+    # schedule.every().day.at("23:55").do(job_email, recipients=users.get_emails())
+    schedule.every(30).do(job_email, recipients=users.get_emails())
+    # schedule.every().day.at("23:59").do(job_upload, files=csv_files)
+    schedule.every(30).seconds.do(job_upload, files=csv_files)
 
     while True:
         try:

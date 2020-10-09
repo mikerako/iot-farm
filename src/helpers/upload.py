@@ -19,7 +19,7 @@ class Uploader:
         gauth.LoadCredentialsFile(drive_info['credentials'])
         self._drive = GoogleDrive(gauth)
         self._parent_id = drive_info['parent_folder']
-        
+
     def upload_file(self, filename: str, parent_id = None) -> None:
         '''
         Upload a file to Google Drive.
@@ -40,7 +40,7 @@ class Uploader:
         fi['title'] = os.path.basename(filename)
         fi.SetContentFile(filename)
         fi.Upload()
-    
+
     def create_folder(self, filename: str):
         '''
         Creates a folder in Google Drive. Returns the ID of the newly created folder.
@@ -56,7 +56,7 @@ class Uploader:
                 }
             ]
         }
-        
+
         folder = self._drive.CreateFile(metadata)
         folder.Upload()
 

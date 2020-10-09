@@ -46,7 +46,7 @@ class EmailAlert:
 
         email = generate_email(context)
 
-        try: 
+        try:
             response = server.sendmail(self._username, recipients, email.as_bytes())
             if response:
                 logging.debug(response)
