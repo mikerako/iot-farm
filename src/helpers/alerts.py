@@ -115,13 +115,14 @@ def generate_email(context: dict) -> MIMEMultipart:
     text = MIMEText(html, 'html')
     email.attach(text)
 
-    for graph in context['graphs']:
-        print(graph)
-        with open(graph, 'rb') as fi:
-            img = MIMEImage(fi.read())
-            name = os.path.basename(graph)
-            img.add_header('Content-ID', '<{}>'.format(name))
-            img.add_header('Content-Disposition', 'inline', filename=name)
-            email.attach(img)
+    graphs = context.get('graphs')
+    if graphs:
+        for graph in graphs:
+            with open(graph, 'rb') as fi:
+                img = MIMEImage(fi.read())
+                name = os.path.basename(graph)
+                img.add_header('Content-ID', '<{}>'.format(name))
+                img.add_header('Content-Disposition', 'inline', filename=name)
+                email.attach(img)
 
     return email

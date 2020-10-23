@@ -30,13 +30,13 @@ class CSVProcessor:
             os.mkdir(image_path)
 
         for prop in properties:
-            graph_data(self._data['timestamp'], self._data[prop.name], time, prop)
+            graph_data(self._directory, self._data['timestamp'], self._data[prop.name], time, prop)
             filename = os.path.join(self._directory, '{}.png'.format(prop.name))
             graph_filenames.append(filename)
 
         return graph_filenames
 
-def graph_data(xdata: np.array, ydata: np.array, xprop: Property, yprop: Property):
+def graph_data(dir: str, xdata: np.array, ydata: np.array, xprop: Property, yprop: Property):
     graph_path = os.path.join(self._directory, '{}.png'.format(yprop.name))
 
     fig, ax = plt.subplots()
