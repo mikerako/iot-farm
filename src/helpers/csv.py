@@ -37,7 +37,7 @@ class CSVProcessor:
         return graph_filenames
 
 def graph_data(dir: str, xdata: np.array, ydata: np.array, xprop: Property, yprop: Property):
-    graph_path = os.path.join(self._directory, '{}.png'.format(yprop.name))
+    graph_path = os.path.join(dir, '{}.png'.format(yprop.name))
 
     fig, ax = plt.subplots()
     ax.plot_date(xdata, ydata, xdate=True)

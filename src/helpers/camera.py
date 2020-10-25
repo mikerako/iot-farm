@@ -38,7 +38,7 @@ class Camera:
         with PiRGBArray(self.camera) as stream:
             self.camera.capture(stream, format='bgr')
         self.camera.stop_preview()
-        return image
+        return stream
 
     def vid_stream(self):
         self.camera.resolution = (640, 480)
@@ -56,8 +56,8 @@ class Camera:
                 break
         end_time = datetime.now()
         time_passed_str = self.format_time(end_time - start_time)
-        logging.debug("Video stream lasted", time_passed_str)
-        print("Video stream lasted", time_passed_str)
+        logging.debug("Video stream lasted " + time_passed_str)
+        print("Video stream lasted" + time_passed_str)
         self.rawCapture = PiRGBArray(self.camera, size=(1920, 1080))
 
     def format_time(self, time: datetime) -> str:
