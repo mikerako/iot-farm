@@ -42,7 +42,7 @@ def graph_data(dir: str, xdata: np.array, ydata: np.array, xprop: Property, ypro
     fig, ax = plt.subplots()
     ax.plot_date(xdata, ydata, xdate=True)
 
-    loc = dates.AutoDateLocator()
+    loc = dates.AutoDateLocator(maxticks=6)
     ax.xaxis.set_major_locator(loc)
 
     plt.xlabel('{} ({})'.format(xprop.name, xprop.unit))
