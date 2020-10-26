@@ -12,7 +12,6 @@ import os
 from datetime import datetime
 import logging
 import cv2
-import cv2.aruco as aruco
 import numpy as np
 
 class Camera:
@@ -20,7 +19,7 @@ class Camera:
     def __init__(self):
         # initialize the camera and grab a reference to the raw camera capture
         self.camera = PiCamera()
-        self.camera.resolution = (1920, 1080)
+        self.camera.resolution = (1920, 1088)
         self.camera.framerate = 30
         self.rawCapture = PiRGBArray(self.camera, size=(1920, 1080))
         # warmup the camera
@@ -37,8 +36,9 @@ class Camera:
         #self.camera.capture('/home/pi/Desktop/image_test.jpg')
         with PiRGBArray(self.camera) as stream:
             self.camera.capture(stream, format='bgr')
-        self.camera.stop_preview()
-        return stream
+            #image = stream;
+            self.camera.stop_preview()
+            return stream.array
 
     def vid_stream(self):
         self.camera.resolution = (640, 480)
@@ -85,8 +85,9 @@ def main() -> None:
     cam = Camera()
     for idx in range(0,10):
         im = cam.cap_image()
-        # im, time = cam.cap_image()
-        cv2.imwrite(img_folder + str(idx) + "__" + str(time) + ".png", im)
+        print(type(im))
+        #print(im.shape)
+        cv2.imwrite(img_folder + str(idx) + "__" + ".png", im)
         time.sleep(5)
 
     cam.vid_stream()
