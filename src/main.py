@@ -4,7 +4,7 @@ Driver code for IoT farm back-end.
 Author: Kevin Kraydich <kevin.kraydich@gmail.com>
 '''
 
-from helpers import alerts, upload, user, csv, sensor # , camera
+from helpers import alerts, upload, user, csv, sensor, camera
 import logging
 import json
 import schedule
@@ -13,13 +13,10 @@ import os
 
 # Assumes the system's current directory is iot-farm/src
 os.chdir('../')
-
 SOURCE_PATH = os.path.join(os.getcwd(), 'src')
 DATA_PATH = os.path.join(os.getcwd(), 'data')
 LOG_PATH = os.path.join(os.getcwd(), 'log')
-# logging.basicConfig(level=logging.INFO, filename=os.path.join(LOG_PATH, '{}.log'.format(time.strftime('%Y_%m_%d'))))
-logging.basicConfig(level=logging.INFO)
-
+logging.basicConfig(level=logging.INFO, filename=os.path.join(LOG_PATH, '{}.log'.format(time.strftime('%Y_%m_%d'))))
 
 with open(os.path.join(SOURCE_PATH, 'config-kevin.json')) as f:
     CONFIG = json.load(f)
@@ -42,7 +39,6 @@ def job_text() -> None:
     # TODO - finish
     text = alerts.TextAlert(CONFIG['alerts']['twilio'])
     logging.info('Completed a text job')
-
 
 def job_email(recipients: list) -> None:
     # file_paths = [os.path.join(DATA_PATH, get_filename(i) for i in range(num_sensors)]
@@ -72,7 +68,7 @@ def job_upload(files: list) -> None:
     folder_id = up.create_folder(folder_name)
 
     for fi in files:
-        up.upload_file(fi, folder_id)
+        up.upload_file(fi, parent_id=folder_id)
         reset_file(fi)
     logging.info('Completed an upload job')
 
@@ -92,7 +88,7 @@ def main():
     users = user.Users(CONFIG['alerts']['users'])
     sensors = [sensor.EnvComboSensor(0)]
     csv_files = [os.path.join(DATA_PATH, get_filename(i)) for i in range(len(sensors))]
-    # cam = camera.Camera()
+    cam = camera.Camera()
 
     for f in csv_files:
         reset_file(f)
