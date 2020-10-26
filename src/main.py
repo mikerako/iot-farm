@@ -2,6 +2,7 @@
 Driver code for IoT farm back-end.
 
 Author: Kevin Kraydich <kevin.kraydich@gmail.com>
+        Michael Rakowiecki <kevin.kraydich@gmail.com>
 '''
 
 from helpers import alerts, upload, user, csv, sensor, camera
@@ -11,11 +12,11 @@ import schedule
 import time
 import os
 
-# Assumes the system's current directory is iot-farm/src
-os.chdir('../')
-SOURCE_PATH = os.path.join(os.getcwd(), 'src')
-DATA_PATH = os.path.join(os.getcwd(), 'data')
-LOG_PATH = os.path.join(os.getcwd(), 'log')
+# Assumes the system's current directory is iot-farm/src, so move to iot-farm
+# os.chdir('../')
+SOURCE_PATH = os.path.join(os.getcwd(), '../src')
+DATA_PATH = os.path.join(os.getcwd(), '../data')
+LOG_PATH = os.path.join(os.getcwd(), '../log')
 logging.basicConfig(level=logging.INFO, filename=os.path.join(LOG_PATH, '{}.log'.format(time.strftime('%Y_%m_%d'))))
 
 with open(os.path.join(SOURCE_PATH, 'config-kevin.json')) as f:
@@ -94,7 +95,7 @@ def main():
         reset_file(f)
 
     schedule.every(10).seconds.do(job_read, sensors=sensors, files=csv_files)
-    # schedule.every().day.at("23:55").do(job_email, recipients=users.get_emails())
+    #   schedule.every().day.at("23:55").do(job_email, recipients=users.get_emails())
     schedule.every(30).seconds.do(job_email, recipients=users.get_emails())
     # schedule.every().day.at("23:59").do(job_upload, files=csv_files)
     schedule.every(30).seconds.do(job_upload, files=csv_files)
