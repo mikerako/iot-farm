@@ -94,15 +94,16 @@ def job_read(recipients: list, sensors: list, files: list, thresholds: dict) -> 
         'humidity': 0,
         'pressure': 0
     }
-    num_sensors_read = 0
+
     # Read the current values from all sensors
     for i in range(len(sensors)):
+        print('reading sensor...')
         data = sensors[i].read_bme()
+        print('done reading sensor')
 
         # Update the running average
         for key in data.keys():
-            average[key] = (data[key] + num_sensors_read * average[key]) / (num_sensors_read + 1)
-        num_sensors_read += 1
+            average[key] = (data[key] + i * average[key]) / (i + 1)
 
         # Write the results to the appropriate file
         line = '{},{},{},{}\n'.format(
@@ -159,7 +160,7 @@ def main():
     cam = camera.Camera()
     thresholds = {
         'temperature': (58, 85),
-        'humidity': (0, 100),
+        'humidity': (0, 100)
     }
 
     for f in csv_files:
