@@ -99,6 +99,7 @@ def job_read(recipients: list, sensors: list, files: list, thresholds: dict) -> 
     for i in range(len(sensors)):
         print('reading sensor...')
         data = sensors[i].read_bme()
+        print(data)
         print('done reading sensor')
 
         # Update the running average
